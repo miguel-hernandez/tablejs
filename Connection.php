@@ -1,12 +1,5 @@
 <?php
  class Conexion{
-   /*
-   private $tipo_de_base  = 'mysql';
-   private $host                    = 'localhost';
-   private $dbname             = 'reportesapadb';
-   private $user                    = 'root';
-   private $pass                    = 'root';
-*/
    private $tipo_de_base  = 'mysql';
    private $host                    = '127.0.0.1';
    private $dbname             = 'usuariodb';
