@@ -4,6 +4,16 @@
   <meta charset="utf-8">
   <title>TableJS</title>
   <link rel="stylesheet" href="bootstrap3.3.7.min.css">
+
+  <style>
+  .table_head{
+  	background-color: #8ECAD5;
+  	text-align: center;
+  	font-weight: bold;
+  	text-transform: uppercase;
+  	width: 100% !important;
+  }
+  </style>
 </head>
 <body>
   <p>
@@ -12,12 +22,9 @@
   <div class="container">
     <p>
       <div class="row">
-        <div class="col-sm-8"></div>
-        <div class="col-sm-6 col-xs-6 col-md-2 col-lg-2">
-          <button id="btn_grid_edit" class="btn btn-info btn-block"> Editar </button>
-        </div>
-        <div class="col-sm-6 col-xs-6 col-md-2 col-lg-2">
-          <button id="btn_grid_delete" class="btn btn-danger btn-block"> Eliminar </button>
+        <div class="col-md-9"></div>
+        <div class="col-sm-12 col-xs-12 col-md-3 col-lg-3">
+          <button id="btn_show_row_selected" class="btn btn-primary btn-block"> Mostrar fila seleccionada </button>
         </div>
       </div>
     </p>

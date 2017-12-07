@@ -1,76 +1,106 @@
 function Grid(iddiv,columnas,arr_datos){
-  obj_grid = this;
+  that_grid = this;
 
-  obj_grid.iddiv = iddiv;
-  obj_grid.columns = columnas;
-  obj_grid.arr_datos = arr_datos;
+  that_grid.iddiv = iddiv;
+  that_grid.columns = columnas;
+  that_grid.arr_datos = arr_datos;
 
-  obj_grid.html  = "";
-  obj_grid.arr_row_selected = [];
-
-  this.init  = function(){
-    $("#"+obj_grid.iddiv+ " tbody tr").each(function () {
-      $(this).css( {"background-color": "white", "font-size": "14px"} );
-    });
-  }// init()
+  that_grid.arr_row_selected = [];
 
   this.load = function(){
     var html="";
-    obj_grid.init();
+    that_grid.init();
 
     html += "<div class='table-responsive'>";
-    html += "<table id='idtable' class='table bordered condensed'>";
-    html += "<thead>";
-    html += "<tr class='info'>";
+    html += "<table id='' class='table table-condensed table-hover  table-bordered'>";
 
-    for (var i = 0; i<obj_grid.columns.length; i++) {
-      html += "<td id='"+obj_grid.columns[i]+"'>";
-      html += obj_grid.columns[i];
-      html += "</td>";
-    }
+    /***************** thead ********************/
+    html += "<thead class='table_head'>";
+    html += "<tr>";
+    var objeto_columnas = that_grid.columns;
+    for (var item in objeto_columnas) {
+      if (objeto_columnas.hasOwnProperty(item)) { // hasOwnProperty() devuelve un booleano indicando si el objeto tiene EL item especificada.
+        var tipo = objeto_columnas[item]["type"];
+        var label = objeto_columnas[item]["header"];
+        if(tipo=="hidden"){
+          html += "<th id='"+item+"' hidden>";
+          html +=label;
+          html += "</th>";
+        }
+        else{
+          html += "<th id='"+item+"'>";
+          html += label;
+          html += "</th>";
+        }
+      }
+    }// for objeto_columnas
+
     html += "</tr>";
     html += "</thead>";
-
+    /***************** TBODY ********************/
     html += "<tbody>";
-    for (var i = 0; i<obj_grid.arr_datos.length; i++) {
-      html += "<tr>";
-      for (var j=0; j<obj_grid.columns.length; j++) {
-        html += "<td id='"+obj_grid.columns[j]+"' data='"+obj_grid.arr_datos[i][obj_grid.columns[j]]+"'>";
-        html += obj_grid.arr_datos[i][obj_grid.columns[j]];
-        html += "</td>";
+
+    if(that_grid.arr_datos.length > 0){
+      for (var i = 0; i<that_grid.arr_datos.length; i++) {
+        html += "<tr>";
+        if (objeto_columnas.hasOwnProperty(item)) {
+          for (var item in objeto_columnas) {
+            if(objeto_columnas[item]["type"]=="hidden"){
+              html += "<td id='"+item+"' data='"+that_grid.arr_datos[i][item]+"' hidden>";
+              html += that_grid.arr_datos[i][item];
+              html += "</td>";
+            }
+            else{
+              html += "<td id='"+item+"' data='"+that_grid.arr_datos[i][item]+"'>";
+              html += that_grid.arr_datos[i][item];
+              html += "</td>";
+            }
+          }// end for columns
+        }
+        html += "</tr>";
       }
+    }
+    else{
+      html += "<tr>";
+      html += "<td colspan='"+that_grid.columns.length+"'>No hay datos para mostrar</td>";
       html += "</tr>";
     }
 
     html += "</tbody>";
+
     html += "</table>";
     html += "</div>";
 
-    obj_grid.html = html;
-
-    obj_grid.finish();
+    that_grid.finish(html);
 
   }// load()
 
-  this.finish = function(){
-    $("#"+obj_grid.iddiv).empty();
-    $("#"+obj_grid.iddiv).append(obj_grid.html);
-  }// load()
+  this.finish = function(str_html){
+    $("#"+that_grid.iddiv).empty();
+    $("#"+that_grid.iddiv).append(str_html);
+  }// finish()
 
   this.get_row_selected = function(){
-    return obj_grid.arr_row_selected;
-  }// load()
+    return that_grid.arr_row_selected;
+  }// get_row_selected()
 
-  $(document).on("click", "#"+obj_grid.iddiv+" tbody tr", function(e) {
-    obj_grid.init();
-    $(this).css( {"background-color": "#CEF6CE", "font-size": "16px"} );
-    var data = $(this).attr('id');
+  $(document).on("click", "#"+that_grid.iddiv+" tbody tr", function(e) {
+    that_grid.init();
+    // $(this).css( {"background-color": "#CEF6CE", "font-size": "16px"} );
+    $(this).css( {"background-color": "#D0EDF2", "font-size": "15px"} );
 
-    $("#id_seleccionado").empty("");
-    $("#id_seleccionado").append(data);
-
+    var arr_aux = [];
     $(this).children("td").each(function (){
-      obj_grid.arr_row_selected[this.id] = $(this).attr('data');
+      arr_aux[this.id] = $(this).attr('data');
     });
+
+    that_grid.arr_row_selected[0] = arr_aux;
   });
+
+  this.init  = function(){
+    $("#"+that_grid.iddiv+ " tbody tr").each(function () {
+      $(this).css( {"background-color": "white", "font-size": "14px"} );
+    });
+  }// init()
+
 }// Grid

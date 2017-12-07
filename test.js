@@ -1,17 +1,21 @@
 $(document).ready(function () {
   init();
 
-  $("#btn_grid_edit").click(function(e){
+  $("#btn_show_row_selected").click(function(e){
     e.preventDefault();
     var arr_row = grid.get_row_selected();
-    show_selected(arr_row);
+    console.info("arr_row");
+    console.info(arr_row);
+    var arr_columnas = grid.columns;
+    if(arr_row.length==0){
+      alert("Seleccione un registro");
+    }else{
+      console.info(arr_row[0]["id"]);
+      show_selected(arr_row, arr_columnas);
+    }
   });
 
-  $("#btn_grid_delete").click(function(e){
-    e.preventDefault();
-    var arr_row = grid.get_row_selected();
-    show_selected(arr_row);
-  });
+
 });
 
 function init(){
@@ -20,13 +24,15 @@ function init(){
     url: "Usuario.php",
     data: {},
     success: function (data) {
-      var arr_pgridok = JSON.parse(data);
-      columnas = ["id_usuario","nombre","paterno","materno","email"];
+      var arr_result = JSON.parse(data);
+      var columnas = arr_result.columnas;
+      var result = arr_result.result;
+      // columnas = ["id","nombre","paterno","materno","email"];
 
       grid = new Grid(
         "div_grid", // el id del div HTML
         columnas, // El array de columnas, serán los encabezados
-        arr_pgridok // E array de los datos para llenar el grid, los índices deben corresponder a los nombres de las columnas
+        result // E array de los datos para llenar el grid, los índices deben corresponder a los nombres de las columnas
       );
       grid.load();
 
@@ -37,15 +43,13 @@ function init(){
   });
 }// init()
 
-function show_selected(row){
-  var arr_ = [];
+function show_selected(row, arr_columnas){
   var str = "";
-  arr_.push(row);
-
-  for(var i=0;i<arr_.length;i++){
-    for(var j=0;j<columnas.length;j++){
-      str = str+[columnas[j]]+": "+arr_[i][columnas[j]]+"<br>         ";
-    }
+  for(var i=0;i<row.length;i++){
+    var miObjeto = arr_columnas;
+    for (var item in miObjeto) {
+      str = str+[item]+": "+row[i][item]+"<br>";
+    }// end for columns
   }
 
   $("#fila_seleccionada").empty();
